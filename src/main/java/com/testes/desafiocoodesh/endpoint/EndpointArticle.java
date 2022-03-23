@@ -42,7 +42,6 @@ public class EndpointArticle {
     public ResponseEntity adicionarArtigo(@RequestBody Article article) {
 
         //Pega o maior id do banco e adiciona um para ter o id correto e sobreescrever nenhum outro registro
-        System.out.println(repositoryArticle.retornarMaiorId().getId());
         article.setId(repositoryArticle.retornarMaiorId().getId() + 1);
 
         if (article.getPublishedAt() == null) {
