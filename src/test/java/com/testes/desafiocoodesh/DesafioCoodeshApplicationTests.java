@@ -1,13 +1,10 @@
-package com.testes.desafiocoodesh;
+package com.desafios.desafiocoodesh;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class DesafioCoodeshApplicationTests {
+public class DesafioCoodeshApplicationTests {
 
 	@Test
 	void contextLoads() {
 	}
-
 }
