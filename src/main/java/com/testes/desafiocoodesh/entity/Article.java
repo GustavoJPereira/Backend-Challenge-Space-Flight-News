@@ -1,5 +1,7 @@
 package com.testes.desafiocoodesh.entity;
 
+import org.hibernate.annotations.Generated;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,7 +9,10 @@ import java.util.List;
 public class Article {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // O uso de GeneratedValue impede o usuário de decidir o
+    // valor no banco, impedindo a cópia dos dados da SpaceFly, mas a falta dele impede a organização de novos itens
+    // adicionados. Decidi por deixa-lo presente. Por este motivo, o id dos artigos não será o mesmo no banco de dados
+    // desta API e da spacefly.
     private Long id;
     private Boolean featured;
     private String title;
@@ -16,16 +21,21 @@ public class Article {
     @Column(name = "imageurl")
     private String imageUrl;
 
-    @Column(name = "newssite")
+    @Column(name = "newssite",length = 60)
     private String newsSite;
 
+    //Testes mostraram que alguns artigos específicos passam de mil caracteres. Por conta destes casos a coluna é uma
+    //varchar de 1500 caracteres.
+    @Column(length = 1500)
     private String summary;
 
-    @Column(name = "publishedat")
+    //Todo perceba que o nome correto para coluna é updateAt mas deveria ser updatedAt
+
+    @Column(name = "publishedat", length = 26)
     private String publishedAt;
 
-    @Column(name = "updateat")
-    private String updateAt;
+    @Column(name = "updatedat",  length = 26)
+    private String updatedAt;
 
     @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(name = "article_event", joinColumns = @JoinColumn(name = "articleId", referencedColumnName = "id"),
@@ -35,7 +45,7 @@ public class Article {
     @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(name = "article_launch", joinColumns = @JoinColumn(name = "articleId", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "launchId", referencedColumnName = "id"))
-    private List<Launch> launchs;
+    private List<Launch> launches;
 
     public Long getId() {
         return id;
@@ -101,12 +111,12 @@ public class Article {
         this.publishedAt = publishedAt;
     }
 
-    public String getUpdateAt() {
-        return updateAt;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(String updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public List<Event> getEvents() {
@@ -117,11 +127,11 @@ public class Article {
         this.events = events;
     }
 
-    public List<Launch> getLaunchs() {
-        return launchs;
+    public List<Launch> getLaunches() {
+        return launches;
     }
 
-    public void setLaunchs(List<Launch> launchs) {
-        this.launchs = launchs;
+    public void setLaunches(List<Launch> launches) {
+        this.launches = launches;
     }
 }

@@ -1,23 +1,21 @@
 package com.testes.desafiocoodesh.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Event {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+
+    @Column(length = 30)
     private String provider;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
