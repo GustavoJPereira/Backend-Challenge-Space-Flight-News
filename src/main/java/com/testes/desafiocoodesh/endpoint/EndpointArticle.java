@@ -2,7 +2,9 @@ package com.testes.desafiocoodesh.endpoint;
 
 import com.testes.desafiocoodesh.entity.Article;
 import com.testes.desafiocoodesh.repository.RepositoryArticle;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+@OpenAPIDefinition(info = @Info(version = "v:1", title = "API para teste Back-End Challenge"))
 @RestController
 @RequestMapping("/articles")
 public class EndpointArticle {
@@ -23,9 +26,11 @@ public class EndpointArticle {
     @Autowired
     private RepositoryArticle repositoryArticle;
 
+    @Parameter(name = "pageable")
     @Parameter(name = "page", description = "Número da página")
     @Parameter(name = "size", description = "Quantidade de respostas")
-    @Parameter(name = "sort", description = "Se a pesquisa é em ordem ascendente (asc) ou descendente (desc)")
+    @Parameter(name = "sort", description = "Atributo pelo qual a resposta será enviada mais ordem (asc ou desc)",
+            example = "sort=id,desc")
     @GetMapping
     public Page<Article> ListarTodos(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return repositoryArticle.findAll(pageable);
