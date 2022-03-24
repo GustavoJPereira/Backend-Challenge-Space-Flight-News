@@ -2,9 +2,14 @@ package com.testes.desafiocoodesh.endpoint;
 
 import com.testes.desafiocoodesh.entity.Article;
 import com.testes.desafiocoodesh.repository.RepositoryArticle;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+@OpenAPIDefinition(info = @Info(version = "v:1", title = "API para teste Back-End Challenge"))
 @RestController
 @RequestMapping("/articles")
 public class EndpointArticle {
@@ -20,8 +26,13 @@ public class EndpointArticle {
     @Autowired
     private RepositoryArticle repositoryArticle;
 
+    @Parameter(name = "pageable")
+    @Parameter(name = "page", description = "Número da página")
+    @Parameter(name = "size", description = "Quantidade de respostas")
+    @Parameter(name = "sort", description = "Atributo pelo qual a resposta será enviada mais ordem (asc ou desc)",
+            example = "sort=id,desc")
     @GetMapping
-    public Page<Article> ListarTodos(Pageable pageable) {
+    public Page<Article> ListarTodos(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return repositoryArticle.findAll(pageable);
     }
 
@@ -39,7 +50,7 @@ public class EndpointArticle {
     // problema que impede o relacioonamento dele com os evests e com os lanches. Isso pode ser contornado inserindo um
     //número maior no id do que os presentes no banco.
     @PostMapping
-    public ResponseEntity adicionarArtigo(@RequestBody Article article) {
+    public ResponseEntity<HttpStatus> adicionarArtigo(@RequestBody Article article) {
 
         //Pega o maior id do banco e adiciona um para ter o id correto e sobreescrever nenhum outro registro
         article.setId(repositoryArticle.retornarMaiorId().getId() + 1);
@@ -63,7 +74,7 @@ public class EndpointArticle {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity atualizaArtigo(@PathVariable("id") Long id, @RequestBody Article article) {
+    public ResponseEntity<HttpStatus> atualizaArtigo(@PathVariable("id") Long id, @RequestBody Article article) {
         if (repositoryArticle.findById(id).isPresent()) {
             article.setId(id);
 
@@ -83,7 +94,7 @@ public class EndpointArticle {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity removerArtigo(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> removerArtigo(@PathVariable("id") Long id) {
         if (repositoryArticle.findById(id).isPresent()) {
             repositoryArticle.deleteById(id);
 
