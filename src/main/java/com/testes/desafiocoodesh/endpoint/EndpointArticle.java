@@ -50,7 +50,7 @@ public class EndpointArticle {
     // problema que impede o relacioonamento dele com os evests e com os lanches. Isso pode ser contornado inserindo um
     //número maior no id do que os presentes no banco.
     @PostMapping
-    public ResponseEntity adicionarArtigo(@RequestBody Article article) {
+    public ResponseEntity<HttpStatus> adicionarArtigo(@RequestBody Article article) {
 
         //Pega o maior id do banco e adiciona um para ter o id correto e sobreescrever nenhum outro registro
         article.setId(repositoryArticle.retornarMaiorId().getId() + 1);
@@ -74,7 +74,7 @@ public class EndpointArticle {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity atualizaArtigo(@PathVariable("id") Long id, @RequestBody Article article) {
+    public ResponseEntity<HttpStatus> atualizaArtigo(@PathVariable("id") Long id, @RequestBody Article article) {
         if (repositoryArticle.findById(id).isPresent()) {
             article.setId(id);
 
@@ -94,7 +94,7 @@ public class EndpointArticle {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity removerArtigo(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> removerArtigo(@PathVariable("id") Long id) {
         if (repositoryArticle.findById(id).isPresent()) {
             repositoryArticle.deleteById(id);
 
