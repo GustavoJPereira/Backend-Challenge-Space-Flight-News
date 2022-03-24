@@ -2,9 +2,12 @@ package com.testes.desafiocoodesh.endpoint;
 
 import com.testes.desafiocoodesh.entity.Article;
 import com.testes.desafiocoodesh.repository.RepositoryArticle;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +23,11 @@ public class EndpointArticle {
     @Autowired
     private RepositoryArticle repositoryArticle;
 
+    @Parameter(name = "page", description = "Número da página")
+    @Parameter(name = "size", description = "Quantidade de respostas")
+    @Parameter(name = "sort", description = "Se a pesquisa é em ordem ascendente (asc) ou descendente (desc)")
     @GetMapping
-    public Page<Article> ListarTodos(Pageable pageable) {
+    public Page<Article> ListarTodos(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return repositoryArticle.findAll(pageable);
     }
 
