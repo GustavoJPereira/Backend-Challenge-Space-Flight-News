@@ -18,7 +18,8 @@ public class CopiaNovosDadosDaSpacefly {
     @Scheduled(cron = "0 0 9 * * ?") // * * 9 ? * * *
     public void CopiarDados() {
         if (!repositoryUltimoIdSpacefly.findById(1L).isPresent()){
-            repositoryUltimoIdSpacefly.iniciarBanco();}
+            repositoryUltimoIdSpacefly.iniciarBanco();
+        }
         copiarSpacefly.copiarSpacefly();
     }
 }
