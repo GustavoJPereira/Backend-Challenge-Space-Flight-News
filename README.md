@@ -36,6 +36,20 @@ A rota padrão para a aplicação é http://localhost:8080 e para acessar a docu
 adicione **/swagger-ui/index.html** a rota.
 
 
+### Aviso
+Caso queira ultilizar o script que copia o banco **copiarSpacefly()** fora do cron, 
+também execute estas linha de código antes dele, para garantir o pelo funcionamento:
+
+```Java
+if (!repositoryUltimoIdSpacefly.findById(1L).isPresent()){
+        repositoryUltimoIdSpacefly.iniciarBanco();
+    }
+``` 
+## Apêndice
+
+Link da apresentação da API no Loom [Aqui](https://www.loom.com/share/4ada9fc1efed4564af961621928fb046?sharedAppSource=personal_library).
 
 
-> This is a challenge by Coodesh
+
+
+> This is a challenge by Coodesh.
